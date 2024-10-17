@@ -1,0 +1,45 @@
+from tkinter import *    #importando a biblioteca TKinter 
+                         # * importa toda a blibioteca 
+from tkinter import ttk  # ttk importa a ultima versão
+
+root = Tk()   # root abre a caixa (container) (janela principal)
+root.title("Pés para Metros")  # root.title nomeia o app
+
+def calculate(*args): #*args permite que todo tipo de argumento//texto//numero//caracter seja imputado na função
+    try:
+        value = float(feet.get())  #get retorna a string que o usuário digitou nesse campo
+        meters.set(int(0.3048 * value * 10000.0 + 0.5)/10000.0)
+    except ValueError:
+        pass
+
+#cria o container (celula) <div></div>
+   #frame = cria a celula {ttk.Frame}
+mainframe = ttk.Frame(root, padding="3 3 12 12")  #padding define o espaço entre o conteudo e as bordas do container (cima baixo direita esquerda)
+mainframe.grid(column=0, row=0, sticky=(N, W, E, S)) #stick define a direção orientada ao redimensionar a tela
+#N = North/ Norte | W = West/ Oeste | E - East/Lest | S = South/Sul
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+#definindo a variavel
+feet = StringVar()  #tipando a variavel  #tipo + variavel {armazena e rastreia}
+#Definindo variavel de entrada
+feet_entry = ttk.Entry(mainframe, width=7, textvariable=feet) # textvariable = variavel
+feet_entry.grid(column=2, row=1, sticky=(W, E))
+
+meters = StringVar()
+ttk.Label(mainframe, textvariable=meters).grid(column=2, row=2, sticky=(W, E))
+
+ttk.Button(mainframe, text="Calcular", command=calculate).grid(column=3, row=3, sticky=W) #insere um botão para calcular
+#Label cria paragrafo <p></p>
+ttk.Label(mainframe, text="Pés").grid(column=3, row=1, sticky=W)
+ttk.Label(mainframe, text="É equivalente a: ").grid(column=1, row=2, sticky=E)
+ttk.Label(mainframe, text="Metros").grid(column=3, row=2, sticky=W)
+
+#adicionar Polish (Polonês)
+for child in mainframe.winfo_children(): #Este método retorna uma lista de todos os widgets (ou "filhos") que estão contidos dentro do mainframe
+    child.grid_configure(padx=5, pady=5) #Um loop configura espaçamento (padx e pady) entre todos os widgets.
+
+feet_entry.focus() #O método focus() é chamado para que o cursor apareça automaticamente nesse campo de entrada quando a interface é carregada
+root.bind("<Return>", calculate) #Este método liga a tecla "Return" (ou "Enter") à função
+
+root.mainloop()  # root.mainloop cria um loop e mantem o app aberto
