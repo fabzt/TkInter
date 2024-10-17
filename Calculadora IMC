@@ -1,0 +1,52 @@
+from tkinter import *    #importando a biblioteca TKinter 
+                         # * importa toda a blibioteca 
+from tkinter import ttk  # ttk importa a ultima versão
+
+root = Tk()   # root abre a caixa (container) (janela principal)
+root.title("Calculadora IMC")  # root.title nomeia o app
+
+def calculate(*args): #*args permite que todo tipo de argumento//texto//numero//caracter seja imputado na função
+    try:
+        weight_value = float(weight.get())
+        height_value = float(height.get())
+        imc = weight_value / (height_value * height_value)
+        result.set(f"{imc:.1f}")
+    except ValueError:
+        pass
+
+#cria o container (celula) <div></div>
+   #frame = cria a celula {ttk.Frame}
+mainframe = ttk.Frame(root, padding="3 3 12 12")  #padding define o espaço entre o conteudo e as bordas do container (cima baixo direita esquerda)
+mainframe.grid(column=0, row=0, sticky=(N, W, E, S)) #stick define a direção orientada ao redimensionar a tela
+#N = North/ Norte | W = West/ Oeste | E - East/Lest | S = South/Sul
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+#definindo a variavel
+height = StringVar()  #tipando a variavel  #tipo + variavel {armazena e rastreia}
+#Definindo variavel de entrada
+height_entry = ttk.Entry(mainframe, width=7, textvariable=height) # textvariable = variavel
+height_entry.grid(column=2, row=1, sticky=(W, E))
+
+weight = StringVar()  #tipando a variavel  #tipo + variavel {armazena e rastreia}
+#Definindo variavel de entrada
+weight_entry = ttk.Entry(mainframe, width=7, textvariable=weight) # textvariable = variavel
+weight_entry.grid(column=2, row=2, sticky=(W, E))
+
+result = StringVar()
+ttk.Label(mainframe, textvariable=result).grid(column=2, row=3, sticky=(W, E))
+
+ttk.Button(mainframe, text="Calcular", command=calculate).grid(column=4, row=3, sticky=W) #insere um botão para calcular
+#Label cria paragrafo <p></p>
+ttk.Label(mainframe, text="Altura:").grid(column=1, row=1, sticky=W)
+ttk.Label(mainframe, text="Peso: ").grid(column=1, row=2, sticky=W)
+ttk.Label(mainframe, text="Resultado:").grid(column=1, row=3, sticky=W)
+
+#adicionar Polish (Polonês)
+for child in mainframe.winfo_children(): #Este método retorna uma lista de todos os widgets (ou "filhos") que estão contidos dentro do mainframe
+    child.grid_configure(padx=5, pady=5) #Um loop configura espaçamento (padx e pady) entre todos os widgets.
+
+height_entry.focus() #O método focus() é chamado para que o cursor apareça automaticamente nesse campo de entrada quando a interface é carregada
+root.bind("<Return>", calculate) #Este método liga a tecla "Return" (ou "Enter") à função
+
+root.mainloop()  # root.mainloop cria um loop e mantem o app aberto
