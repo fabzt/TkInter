@@ -1,0 +1,45 @@
+from tkinter import *    #importando a biblioteca TKinter 
+                         # * importa toda a blibioteca 
+from tkinter import ttk  # ttk importa a ultima versão
+
+root = Tk()   # root abre a caixa (container) (janela principal)
+root.title("Milhas para Km")  # root.title nomeia o app
+
+def calculate(*args): #*args permite que todo tipo de argumento//texto//numero//caracter seja imputado na função
+    try:
+        value = float(miles.get())  #get retorna a string que o usuário digitou nesse campo
+        kilometers.set(value* 1.60934)
+    except ValueError:
+        pass
+
+#cria o container (celula) <div></div>
+   #frame = cria a celula {ttk.Frame}
+mainframe = ttk.Frame(root, padding="3 3 12 12")  #padding define o espaço entre o conteudo e as bordas do container (cima baixo direita esquerda)
+mainframe.grid(column=0, row=0, sticky=(N, W, E, S)) #stick define a direção orientada ao redimensionar a tela
+#N = North/ Norte | W = West/ Oeste | E - East/Lest | S = South/Sul
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+#definindo a variavel
+miles = StringVar()  #tipando a variavel  #tipo + variavel {armazena e rastreia}
+#Definindo variavel de entrada
+miles_entry = ttk.Entry(mainframe, width=7, textvariable=miles) # textvariable = variavel
+miles_entry.grid(column=2, row=1, sticky=(W, E))
+
+kilometers = StringVar()
+ttk.Label(mainframe, textvariable=kilometers).grid(column=2, row=2, sticky=(W, E))
+
+ttk.Button(mainframe, text="Calcular", command=calculate).grid(column=3, row=3, sticky=W) #insere um botão para calcular
+#Label cria paragrafo <p></p>
+ttk.Label(mainframe, text="Milhas").grid(column=3, row=1, sticky=W)
+ttk.Label(mainframe, text="É equivalente a: ").grid(column=1, row=2, sticky=E)
+ttk.Label(mainframe, text="Quilômetros").grid(column=3, row=2, sticky=W)
+
+#adicionar Polish (Polonês)
+for child in mainframe.winfo_children(): #Este método retorna uma lista de todos os widgets (ou "filhos") que estão contidos dentro do mainframe
+    child.grid_configure(padx=5, pady=5) #Um loop configura espaçamento (padx e pady) entre todos os widgets.
+
+miles_entry.focus() #O método focus() é chamado para que o cursor apareça automaticamente nesse campo de entrada quando a interface é carregada
+root.bind("<Return>", calculate) #Este método liga a tecla "Return" (ou "Enter") à função
+
+root.mainloop()  # root.mainloop cria um loop e mantem o app aberto
